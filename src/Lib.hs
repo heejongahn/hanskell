@@ -1,6 +1,8 @@
 module Lib
-    ( someFunc
+    ( hanskell
     ) where
 
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+hanskell :: IO ()
+hanskell = do
+  input <- getLine
+  putStrLn input
