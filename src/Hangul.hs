@@ -1,65 +1,71 @@
 module Hangul
   ( HangulString
   , HangulChar
-  , ChoSeong
-  , JungSeong
-  , JongSeong
+  , Choseong
+  , Jungseong
+  , Jongseong
   ) where
 
 import Data.Maybe
-import Data.String (IsString)
+import Data.String (IsString (fromString))
 
-data HangulString = [HangulChar]
+type HangulString = [HangulChar]
+
 data HangulChar = HangulChar
-  { choSeong :: ChoSeong
-  , jungSeong :: JungSeong
-  , jongSeong :: JongSeong
-  } deriving (Show)
+  { choSeong :: Choseong
+  , jungSeong :: Jungseong
+  , jongSeong :: Jongseong
+  }
 
 data Choseong
-  = G     -- ㄱ
-  | KK    -- ㄲ
-  | N     -- ㄴ
-  | D     -- ㄷ
-  | TT    -- ㄸ
-  | L     -- ㄹ
-  | M     -- ㅁ
-  | B     -- ㅂ
-  | BB    -- ㅃ
-  | S     -- ㅅ
-  | SS    -- ㅆ
-  | NULL  -- ㅇ
-  | J     -- ㅈ
-  | JJ    -- ㅉ
-  | CH    -- ㅊ
-  | K     -- ㅋ
-  | T     -- ㅌ
-  | P     -- ㅍ
-  | H     -- ㅎ
+  = ChG     -- ㄱ
+  | ChKK    -- ㄲ
+  | ChN     -- ㄴ
+  | ChD     -- ㄷ
+  | ChTT    -- ㄸ
+  | ChL     -- ㄹ
+  | ChM     -- ㅁ
+  | ChB     -- ㅂ
+  | ChBB    -- ㅃ
+  | ChS     -- ㅅ
+  | ChSS    -- ㅆ
+  | ChNULL  -- ㅇ
+  | ChJ     -- ㅈ
+  | ChJJ    -- ㅉ
+  | ChCH    -- ㅊ
+  | ChK     -- ㅋ
+  | ChT     -- ㅌ
+  | ChP     -- ㅍ
+  | ChH     -- ㅎ
+  deriving (Eq)
+
+fromCharToChoseong :: Char -> Maybe Choseong
+fromCharToChoseong c =
+  case c of
+    'ㄱ' -> Just ChG
+    'ㄲ' -> Just ChKK
+    'ㄴ' -> Just ChN
+    'ㄷ' -> Just ChD
+    'ㄸ' -> Just ChTT
+    'ㄹ' -> Just ChL
+    'ㅁ' -> Just ChM
+    'ㅂ' -> Just ChB
+    'ㅃ' -> Just ChBB
+    'ㅅ' -> Just ChS
+    'ㅆ' -> Just ChSS
+    'ㅇ' -> Just ChNULL
+    'ㅈ' -> Just ChJ
+    'ㅉ' -> Just ChJJ
+    'ㅊ' -> Just ChCH
+    'ㅋ' -> Just ChK
+    'ㅌ' -> Just ChT
+    'ㅍ' -> Just ChP
+    'ㅎ' -> Just ChH
+    _    -> Nothing
 
 instance IsString (Maybe Choseong) where
-  fromString s =
-    case s of
-      "ㄱ" -> Just G
-      "ㄲ" -> Just KK
-      "ㄴ" -> Just N
-      "ㄷ" -> Just D
-      "ㄸ" -> Just TT
-      "ㄹ" -> Just L
-      "ㅁ" -> Just M
-      "ㅂ" -> Just B
-      "ㅃ" -> Just BB
-      "ㅅ" -> Just S
-      "ㅆ" -> Just SS
-      "ㅇ" -> Just NULL
-      "ㅈ" -> Just J
-      "ㅉ" -> Just JJ
-      "ㅊ" -> Just CH
-      "ㅋ" -> Just K
-      "ㅌ" -> Just T
-      "ㅍ" -> Just P
-      "ㅎ" -> Just H
-      _    -> Nothing
+  fromString [c] = fromCharToChoseong c
+  fromString _ = Nothing
 
 data Jungseong
   = A   -- ㅏ
@@ -81,88 +87,98 @@ data Jungseong
   | EU  -- ㅡ
   | UI  -- ㅢ
   | I   -- ㅣ
+  deriving (Eq)
+
+fromCharToJungseong :: Char -> Maybe Jungseong
+fromCharToJungseong c =
+  case c of
+    'ㅏ' -> Just A
+    'ㅐ' -> Just AE
+    'ㅑ' -> Just YA
+    'ㅒ' -> Just YAE
+    'ㅓ' -> Just EO
+    'ㅔ' -> Just E
+    'ㅕ' -> Just YEO
+    'ㅖ' -> Just YE
+    'ㅗ' -> Just O
+    'ㅘ' -> Just WA
+    'ㅙ' -> Just WAE
+    'ㅚ' -> Just OE
+    'ㅜ' -> Just U
+    'ㅝ' -> Just WO
+    'ㅞ' -> Just WE
+    'ㅟ' -> Just WI
+    'ㅡ' -> Just EU
+    'ㅢ' -> Just UI
+    'ㅣ' -> Just I
+    _    -> Nothing
 
 instance IsString (Maybe Jungseong) where
-  fromString s =
-    case s of
-      "ㅏ" -> Just A
-      "ㅐ" -> Just AE
-      "ㅑ" -> Just YA
-      "ㅒ" -> Just YAE
-      "ㅓ" -> Just EO
-      "ㅔ" -> Just E
-      "ㅕ" -> Just YEO
-      "ㅖ" -> Just YE
-      "ㅗ" -> Just O
-      "ㅘ" -> Just WA
-      "ㅙ" -> Just WAE
-      "ㅚ" -> Just OE
-      "ㅜ" -> Just U
-      "ㅝ" -> Just WO
-      "ㅞ" -> Just WE
-      "ㅟ" -> Just WI
-      "ㅡ" -> Just EU
-      "ㅢ" -> Just UI
-      "ㅣ" -> Just I
-      _    -> Nothing
+  fromString [c] = fromCharToJungseong c
+  fromString _   = Nothing
 
 data Jongseong
-  = G   -- ㄱ
-  | KK  -- ㄲ
-  | GS  -- ㄳ
-  | N   -- ㄴ
-  | NJ  -- ㄵ
-  | NH  -- ㄶ
-  | D   -- ㄷ
-  | L   -- ㄹ
-  | LG  -- ㄺ
-  | LM  -- ㄻ
-  | LB  -- ㄼ
-  | LS  -- ㄽ
-  | LT  -- ㄾ
-  | LP  -- ㄿ
-  | LH  -- ㅀ
-  | M   -- ㅁ
-  | B   -- ㅂ
-  | BS  -- ㅄ
-  | S   -- ㅅ
-  | SS  -- ㅆ
-  | NG  -- ㅇ
-  | J   -- ㅈ
-  | CH  -- ㅊ
-  | K   -- ㅋ
-  | T   -- ㅌ
-  | P   -- ㅍ
-  | H   -- ㅎ
+  = JG   -- ㄱ
+  | JKK  -- ㄲ
+  | JGS  -- ㄳ
+  | JN   -- ㄴ
+  | JNJ  -- ㄵ
+  | JNH  -- ㄶ
+  | JD   -- ㄷ
+  | JL   -- ㄹ
+  | JLG  -- ㄺ
+  | JLM  -- ㄻ
+  | JLB  -- ㄼ
+  | JLS  -- ㄽ
+  | JLT  -- ㄾ
+  | JLP  -- ㄿ
+  | JLH  -- ㅀ
+  | JM   -- ㅁ
+  | JB   -- ㅂ
+  | JBS  -- ㅄ
+  | JS   -- ㅅ
+  | JSS  -- ㅆ
+  | JNG  -- ㅇ
+  | JJ   -- ㅈ
+  | JCH  -- ㅊ
+  | JK   -- ㅋ
+  | JT   -- ㅌ
+  | JP   -- ㅍ
+  | JH   -- ㅎ
+  deriving (Eq)
+
+fromCharToJongseong :: Char -> Maybe Jongseong
+fromCharToJongseong c =
+  case c of
+    'ㄱ' -> Just JG
+    'ㄲ' -> Just JKK
+    'ㄳ' -> Just JGS
+    'ㄴ' -> Just JN
+    'ㄵ' -> Just JNJ
+    'ㄶ' -> Just JNH
+    'ㄷ' -> Just JD
+    'ㄹ' -> Just JL
+    'ㄺ' -> Just JLG
+    'ㄻ' -> Just JLM
+    'ㄼ' -> Just JLB
+    'ㄽ' -> Just JLS
+    'ㄾ' -> Just JLT
+    'ㄿ' -> Just JLP
+    'ㅀ' -> Just JLH
+    'ㅁ' -> Just JM
+    'ㅂ' -> Just JB
+    'ㅄ' -> Just JBS
+    'ㅅ' -> Just JS
+    'ㅆ' -> Just JSS
+    'ㅇ' -> Just JNG
+    'ㅈ' -> Just JJ
+    'ㅊ' -> Just JCH
+    'ㅋ' -> Just JK
+    'ㅌ' -> Just JT
+    'ㅍ' -> Just JP
+    'ㅎ' -> Just JH
+    _    -> Nothing
 
 instance IsString (Maybe Jongseong) where
-  fromString s =
-    case s of
-      "ㄱ" -> Just G
-      "ㄲ" -> Just KK
-      "ㄳ" -> Just GS
-      "ㄴ" -> Just N
-      "ㄵ" -> Just NJ
-      "ㄶ" -> Just NH
-      "ㄷ" -> Just D
-      "ㄹ" -> Just L
-      "ㄺ" -> Just LG
-      "ㄻ" -> Just LM
-      "ㄼ" -> Just LB
-      "ㄽ" -> Just LS
-      "ㄾ" -> Just LT
-      "ㄿ" -> Just LP
-      "ㅀ" -> Just LH
-      "ㅁ" -> Just M
-      "ㅂ" -> Just B
-      "ㅄ" -> Just BS
-      "ㅅ" -> Just S
-      "ㅆ" -> Just SS
-      "ㅇ" -> Just NG
-      "ㅈ" -> Just J
-      "ㅊ" -> Just CH
-      "ㅋ" -> Just K
-      "ㅌ" -> Just T
-      "ㅍ" -> Just P
-      "ㅎ" -> Just H
-      _    -> Nothing
+  fromString [c] = fromCharToJongseong c
+  fromString _ = Nothing
