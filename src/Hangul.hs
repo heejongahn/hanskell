@@ -37,7 +37,7 @@ data Choseong
   | ChT     -- ㅌ
   | ChP     -- ㅍ
   | ChH     -- ㅎ
-  deriving (Eq)
+  deriving (Eq, Show)
 
 fromCharToChoseong :: Char -> Maybe Choseong
 fromCharToChoseong c =
@@ -87,7 +87,7 @@ data Jungseong
   | EU  -- ㅡ
   | UI  -- ㅢ
   | I   -- ㅣ
-  deriving (Eq)
+  deriving (Eq, Show)
 
 fromCharToJungseong :: Char -> Maybe Jungseong
 fromCharToJungseong c =
@@ -145,7 +145,7 @@ data Jongseong
   | JT   -- ㅌ
   | JP   -- ㅍ
   | JH   -- ㅎ
-  deriving (Eq)
+  deriving (Eq, Show)
 
 fromCharToJongseong :: Char -> Maybe Jongseong
 fromCharToJongseong c =
